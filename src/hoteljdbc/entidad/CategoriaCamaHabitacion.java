@@ -1,30 +1,30 @@
 package hoteljdbc.entidad;
 
 public class CategoriaCamaHabitacion {
-    private int codigoCama;
-    private int codigoHabitacion;
+    private int codigoCategoriaCama;
+    private int codigoCategoriaHabitacion;
     private short cantidad;
 
     public CategoriaCamaHabitacion(int codigoCama, int codigoHabitacion, short cantidad) {
-        this.codigoCama = codigoCama;
-        this.codigoHabitacion = codigoHabitacion;
+        this.codigoCategoriaCama = codigoCama;
+        this.codigoCategoriaHabitacion = codigoHabitacion;
         this.cantidad = cantidad;
     }
 
-    public int getCodigoCama() {
-        return codigoCama;
+    public int getCodigoCategoriaCama() {
+        return codigoCategoriaCama;
     }
 
-    public void setCodigoCama(int codigoCama) {
-        this.codigoCama = codigoCama;
+    public void setCodigoCategoriaCama(int codigoCategoriaCama) {
+        this.codigoCategoriaCama = codigoCategoriaCama;
     }
 
-    public int getCodigoHabitacion() {
-        return codigoHabitacion;
+    public int getCodigoCategoriaHabitacion() {
+        return codigoCategoriaHabitacion;
     }
 
-    public void setCodigoHabitacion(int codigoHabitacion) {
-        this.codigoHabitacion = codigoHabitacion;
+    public void setCodigoCategoriaHabitacion(int codigoCategoriaHabitacion) {
+        this.codigoCategoriaHabitacion = codigoCategoriaHabitacion;
     }
 
     public short getCantidad() {
@@ -34,4 +34,5 @@ public class CategoriaCamaHabitacion {
     public void setCantidad(short cantidad) {
         this.cantidad = cantidad;
     }
+    
 }

@@ -31,7 +31,7 @@ public class CategoriaCamaServicio {
         return null;
     }
     
-    public CategoriaCama mostrarCategoriaCamaById(Connection conn, int id) {
+    public CategoriaCama mostrarCategoriaCama(Connection conn, int id) {
         
         CategoriaCama categoriaCama = null;
         
@@ -56,7 +56,8 @@ public class CategoriaCamaServicio {
     
     public String modificarCategoriaCama(Connection conexion, CategoriaCama entidad){
         
-        String sql = "UPDATE categoriaCama SET TIPO ${entidad.getTipo()} MEDIDAS ${entidad.getMedidas()} FOTOURL ${entidad.getFotoUrl()} COLOR ${entidad.getColor()} WHERE IDCATEGORIACAMA = ${entidad.getIdCategoriaCama()}  ";
+        String sql = "UPDATE categoriaCama SET TIPO = ${entidad.getTipo()} ,MEDIDAS = ${entidad.getMedidas()} ,FOTOURL = ${entidad.getFotoUrl()} ,COLOR = ${entidad.getColor()} "
+                + "WHERE IDCATEGORIACAMA = ${entidad.getIdCategoriaCama()}  ";
         try {
             pst = conexion.prepareStatement(sql) ;
             Boolean validacion = pst.execute();
