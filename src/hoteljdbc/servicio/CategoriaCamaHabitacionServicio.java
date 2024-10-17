@@ -31,7 +31,7 @@ public class CategoriaCamaHabitacionServicio {
     
     
     public CategoriaCamaHabitacion crearCategoriaCamaHabitacion( Connection conexion, CategoriaCamaHabitacion entidad){
-        sql = " INSERT FROM CATEGORIACAMAHABITACION(idCategoriaCama,idCategoriaHabitacion,cantidad) "
+        sql = " INSERT INTO CATEGORIACAMAHABITACION(idCategoriaCama,idCategoriaHabitacion,cantidad) "
                 + "VALUES( ${entidad.getIdCategoriaCama}, ${entidad.getIdCategoriaHabitacion} , ${entidad.getCantidad} )";
         
         try {
