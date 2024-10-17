@@ -48,7 +48,7 @@ public class HabitacionServicio {
                 + "VALUES(HABITACION.SQL.NEXTVAL, ${dto.getPiso()}, ${dto.getTelefono()} , ${dto.getCategoria()} )";
         return ejecutar(conexion, sql);
     }
-    public Habitacion mostrarHabitacion(Connection conexion, HabitacionDTO dto, int id){
+    public Habitacion mostrarHabitacion(Connection conexion, int id){
         sql ="SELECT * FROM HABITACION WHERE IDHABITACION = " + id;
         return ejecutar(conexion, sql);
     }
@@ -60,11 +60,14 @@ public class HabitacionServicio {
                 + " WHERE IDHABITACION = " + id;
         return ejecutar(conexion, sql);
     }
-    public boolean borrarHabitacion(int id) throws SQLException{
+    public boolean borrarHabitacion(int id,Connection conexion) throws SQLException{
         sql = "DELETE FROM HABITACION "
                 + "WHERE IDHABITCION = " + id;
         try{
-            return statement.execute(sql);
+            statement = conexion.prepareStatement(sql);
+            boolean validacion = statement.execute(sql);
+            statement.close();
+            return validacion;
         }catch(SQLException e){
             throw e;
         }
