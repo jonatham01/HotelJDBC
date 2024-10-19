@@ -6,9 +6,9 @@ public class RecepcionHabitacion {
     private int codigoRecepcionHabitacion;
     private Date fecha;
     private int idHabitacion;
-    private CategoriaRecepcion Categoria;
+    private String Categoria;
 
-    public RecepcionHabitacion(int codigoRecepcionHabitacion, Date fecha, int idHabitacion, CategoriaRecepcion categoria) {
+    public RecepcionHabitacion(int codigoRecepcionHabitacion, Date fecha, int idHabitacion, String categoria) {
         this.codigoRecepcionHabitacion = codigoRecepcionHabitacion;
         this.fecha = fecha;
         this.idHabitacion = idHabitacion;
@@ -39,11 +39,13 @@ public class RecepcionHabitacion {
         this.idHabitacion = idHabitacion;
     }
 
-    public CategoriaRecepcion getCategoria() {
+    public String getCategoria() {
         return Categoria;
     }
 
-    public void setCategoria(CategoriaRecepcion categoria) {
-        Categoria = categoria;
+    public void setCategoria(String Categoria) {
+        this.Categoria = Categoria;
     }
+    
+    
 }

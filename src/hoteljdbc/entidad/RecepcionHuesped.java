@@ -2,12 +2,12 @@ package hoteljdbc.entidad;
 
 import java.util.Date;
 
-public class RecepcionHuespedes {
+public class RecepcionHuesped{
     private int idRecepcion;
     private int idHuesped;
     private Date fechaRecepcion;
 
-    public RecepcionHuespedes(int idRecepcion, int idHuesped, Date fechaRecepcion) {
+    public RecepcionHuesped(int idRecepcion, int idHuesped, Date fechaRecepcion) {
         this.idRecepcion = idRecepcion;
         this.idHuesped = idHuesped;
         this.fechaRecepcion = fechaRecepcion;

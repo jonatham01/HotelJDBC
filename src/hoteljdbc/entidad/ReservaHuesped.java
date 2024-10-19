@@ -3,30 +3,30 @@ package hoteljdbc.entidad;
 import java.util.Date;
 
 public class ReservaHuesped {
-    private double idReserva;
-    private int idHuespe;
+    private long idReserva;
+    private int idHuesped;
     private Date fechaReserva;
 
-    public ReservaHuesped(double idReserva, int idHuespe, Date fechaReserva) {
+    public ReservaHuesped(long idReserva, int idHuesped, Date fechaReserva) {
         this.idReserva = idReserva;
-        this.idHuespe = idHuespe;
+        this.idHuesped = idHuesped;
         this.fechaReserva = fechaReserva;
     }
 
-    public double getIdReserva() {
+    public long  getIdReserva() {
         return idReserva;
     }
 
-    public void setIdReserva(double idReserva) {
+    public void setIdReserva(long idReserva) {
         this.idReserva = idReserva;
     }
 
-    public int getIdHuespe() {
-        return idHuespe;
+    public int getIdHuesped() {
+        return idHuesped;
     }
 
-    public void setIdHuespe(int idHuespe) {
-        this.idHuespe = idHuespe;
+    public void setIdHuesped(int idHuesped) {
+        this.idHuesped = idHuesped;
     }
 
     public Date getFechaReserva() {
