@@ -10,8 +10,8 @@ public class CategoriaCamaServicio {
     
     public String crearCategoriaCama(Connection conexion, CategoriaCama entidad){
         
-        String sql = "INSERT INTO categoriaCama (idCategoriaCama,tipo,medidas,fotoUrl,color) "
-                + "Values(CATEGORIACAMA.SEQ.NEXTVAL,?,?,?,?)";
+        String sql = "INSERT INTO categoria_cama (id_categoria_cama,tipo,medidas,foto_url,color) "
+                + "Values(CATEGORIA_CAMA.SEQ.NEXTVAL,?,?,?,?)";
         try {
             pst = conexion.prepareStatement(sql) ;
             pst.setString(1,entidad.getTipo());
@@ -35,16 +35,16 @@ public class CategoriaCamaServicio {
         
         CategoriaCama categoriaCama = null;
         
-        String sql = "SELECT * FROM CategoriaCama WHERE idCategoriaCama =" +id; 
+        String sql = "SELECT * FROM categoria_cama WHERE id_categoria_cama =" +id; 
 
         try {
             PreparedStatement ps = conn.prepareStatement(sql); 
             ResultSet rs = ps.executeQuery(); 
             if (rs.next()) {
-                int idCategoriaCama = rs.getInt("idCategoriaCama");
+                int idCategoriaCama = rs.getInt("id_categoria_cama");
                 String tipo = rs.getString("tipo");
                 String medidas = rs.getString("medidas");
-                String fotoUrl = rs.getString("fotoUrl");
+                String fotoUrl = rs.getString("foto_url");
                 String color = rs.getString("color");
                 categoriaCama = new CategoriaCama(idCategoriaCama, tipo, medidas, fotoUrl, color);
             }
@@ -56,8 +56,8 @@ public class CategoriaCamaServicio {
     
     public String modificarCategoriaCama(Connection conexion, CategoriaCama entidad){
         
-        String sql = "UPDATE categoriaCama SET TIPO = ${entidad.getTipo()} ,MEDIDAS = ${entidad.getMedidas()} ,FOTOURL = ${entidad.getFotoUrl()} ,COLOR = ${entidad.getColor()} "
-                + "WHERE IDCATEGORIACAMA = ${entidad.getIdCategoriaCama()}  ";
+        String sql = "UPDATE categoria_cama SET TIPO = ${entidad.getTipo()} ,MEDIDAS = ${entidad.getMedidas()} ,FOTO_URL = ${entidad.getFotoUrl()} ,COLOR = ${entidad.getColor()} "
+                + "WHERE ID_CATEGORIA_CAMA = ${entidad.getIdCategoriaCama()}  ";
         try {
             pst = conexion.prepareStatement(sql) ;
             Boolean validacion = pst.execute();
@@ -73,8 +73,7 @@ public class CategoriaCamaServicio {
     }
     
     public String eliminarCategoriaCama(Connection conexion, int id){
-        PreparedStatement pst = null;
-        String sql = "DELETE FROM categoriaCama  WHERE IDCATEGORIACAMA = ${entidad.getIdCategoriaCama()}  ";
+        String sql = "DELETE FROM categoria_cama  WHERE ID_CATEGORIA_CAMA = ${entidad.getIdCategoriaCama()}  ";
         try {
             pst = conexion.prepareStatement(sql) ;
             Boolean validacion = pst.execute();

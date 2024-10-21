@@ -17,10 +17,10 @@ public class HabitacionServicio {
         try {
             if(resultado.next()){
                 return new Habitacion(
-                        resultado.getInt("idHabitacion"),
+                        resultado.getInt("id_habitacion"),
                         resultado.getInt("piso"),
                         resultado.getInt("telefono"),
-                        resultado.getInt("idCategoria")
+                        resultado.getInt("id_categoria")
                 );
             }
         } catch (SQLException ex) {
@@ -44,25 +44,25 @@ public class HabitacionServicio {
     }
     
     public Habitacion guardarHabitacion(Connection conexion, HabitacionDTO dto){
-        sql ="INSERT INTO HABITACION(piso,telefono,idCategoria) "
+        sql ="INSERT INTO HABITACION(piso,telefono,id_categoria) "
                 + "VALUES(HABITACION.SQL.NEXTVAL, ${dto.getPiso()}, ${dto.getTelefono()} , ${dto.getCategoria()} )";
         return ejecutar(conexion, sql);
     }
     public Habitacion mostrarHabitacion(Connection conexion, int id){
-        sql ="SELECT * FROM HABITACION WHERE IDHABITACION = " + id;
+        sql ="SELECT * FROM HABITACION WHERE ID_HABITACION = " + id;
         return ejecutar(conexion, sql);
     }
     public Habitacion modificarHabitacion(Connection conexion, HabitacionDTO dto, int id){
         sql ="UPDATE HABITACION "
                 + "SET PISO = " + dto.getPiso()
                 + ",TELEFONO = " + dto.getTelefono()
-                + ", IDCATEGORIA = " + dto.getIdCategoria()
-                + " WHERE IDHABITACION = " + id;
+                + ", ID_CATEGORIA = " + dto.getIdCategoria()
+                + " WHERE ID_HABITACION = " + id;
         return ejecutar(conexion, sql);
     }
     public boolean borrarHabitacion(int id,Connection conexion) throws SQLException{
         sql = "DELETE FROM HABITACION "
-                + "WHERE IDHABITCION = " + id;
+                + "WHERE ID_HABITCION = " + id;
         try{
             statement = conexion.prepareStatement(sql);
             boolean validacion = statement.execute(sql);

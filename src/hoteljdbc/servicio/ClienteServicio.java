@@ -14,7 +14,7 @@ public class ClienteServicio {
    String sql;
     
    public Cliente crearCliente(Connection conexion, Cliente cliente){
-       sql = "INSERT INTO CLIENTE(CEDULA,NOMBRE,TIPOIDENTIFICACION) VALUES(?,?,?)";
+       sql = "INSERT INTO CLIENTE(CEDULA,NOMBRE,TIPO_IDENTIFICACION) VALUES(?,?,?)";
         try{
             statement = conexion.prepareStatement(sql);
             statement.setInt(1, cliente.getCedula());
@@ -39,7 +39,7 @@ public class ClienteServicio {
                Cliente cliente = new Cliente(
                        resultado.getInt("cedula"),
                        resultado.getString("nombre"),
-                       resultado.getString("tipoIdentificacion")
+                       resultado.getString("tipo_identificacion")
                );
                 statement.close();
                 sql = null;
@@ -54,7 +54,7 @@ public class ClienteServicio {
    
    public Cliente modificarCliente(Connection conexion, Cliente cliente, int cedula){
        sql = "UPDATE CLIENTE "
-               + "SET CEDULA = ?, NOMBRE = ?, TIPOIDENTIFICACION = ? "
+               + "SET CEDULA = ?, NOMBRE = ?, TIPO_IDENTIFICACION = ? "
                + "WHERE CEDULA = ?";
         try {
            statement = conexion.prepareStatement(sql);

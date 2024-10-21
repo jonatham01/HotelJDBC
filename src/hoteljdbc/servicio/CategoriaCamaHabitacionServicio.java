@@ -18,8 +18,8 @@ public class CategoriaCamaHabitacionServicio {
         try {
             if(resultado.next()){
                 return new CategoriaCamaHabitacion( 
-                        resultado.getInt("idCategoriaCama"),
-                        resultado.getInt("idCategoriaHabitacion"),
+                        resultado.getInt("codigo_categoriacama"),
+                        resultado.getInt("codigo_categoriahabitacion"),
                         resultado.getShort("cantidad")
                 );
             }
@@ -31,7 +31,7 @@ public class CategoriaCamaHabitacionServicio {
     
     
     public CategoriaCamaHabitacion crearCategoriaCamaHabitacion( Connection conexion, CategoriaCamaHabitacion entidad){
-        sql = " INSERT INTO CATEGORIACAMAHABITACION(idCategoriaCama,idCategoriaHabitacion,cantidad) "
+        sql = " INSERT INTO CATEGORIA_CAMA_HABITACION(codigo_categoriacama,codigo_categoriahabitacion,cantidad) "
                 + "VALUES( ${entidad.getIdCategoriaCama}, ${entidad.getIdCategoriaHabitacion} , ${entidad.getCantidad} )";
         
         try {
@@ -49,9 +49,9 @@ public class CategoriaCamaHabitacionServicio {
     }
     
     public CategoriaCamaHabitacion mostrarCategoriaHabitacion( Connection conexion, int idCategoriaCama, int idCategoriaHabitacion){
-        sql = "SELECT * FROM CATEGORIACAMAHABITACION "
-                + "WHERE IDCATEGORIACAMA = ${idCategoriaCama} "
-                + "AND IDCATEGORIAHABITACION = {idCategoriaHabitacion}";
+        sql = "SELECT * FROM CATEGORIA_CAMA_HABITACION "
+                + "WHERE CODIGO_CATEGORIACAMA = ${idCategoriaCama} "
+                + "AND CODIGO_CATEGORIAHABITACION = {idCategoriaHabitacion}";
         
         try {
             statement = conexion.prepareStatement(sql);
@@ -72,12 +72,12 @@ public class CategoriaCamaHabitacionServicio {
             int idCategoriaCama, 
             int idCategoriaHabitacion){
         
-        sql = "UPDATE CATEGORIACAMAHABITACION "
-                + " SET IDCATEGORIACAMA = ${categoriaCamaHabitacion.getIdCategoriaCama()} , "
-                + ",IDCATEGORIAHABITACION = {categoriaCamaHabitacion.IdCategoriaHabitacion()}  "
+        sql = "UPDATE CATEGORIA_CAMA_HABITACION "
+                + " SET CODIGO_CATEGORIACAMA = ${categoriaCamaHabitacion.getIdCategoriaCama()} , "
+                + ",CODIGO_CATEGORIAHABITACION = {categoriaCamaHabitacion.IdCategoriaHabitacion()}  "
                 + ",CANTIDAD = ${categoriaCamaHabitacion.Cantidad()} "
-                + "WHERE IDCATEGORIACAMA = ${idCategoriaCama} "
-                + "AND IDCATEGORIAHABITACION = {idCategoriaHabitacion}";
+                + "WHERE CODIGO_CATEGORIACAMA = ${idCategoriaCama} "
+                + "AND CODIGO_CATEGORIAHABITACION = {idCategoriaHabitacion}";
         
         try {
             statement = conexion.prepareStatement(sql);
@@ -94,9 +94,9 @@ public class CategoriaCamaHabitacionServicio {
     }
     
     public boolean eliminarCategoriaCamaHabitacion(Connection conexion,int idCategoriaCama, int idCategoriaHabitacion){
-        sql = "DELETE FROM CATEGORIACAMAHABITACION "
-                + "WHERE IDCATEGORIAHABITACION = " + idCategoriaHabitacion
-                + " AND IDCATEGORIACAMA" + idCategoriaCama;
+        sql = "DELETE FROM CATEGORIA_CAMA_HABITACION "
+                + "WHERE CODIGO_CATEGORIAHABITACION = " + idCategoriaHabitacion
+                + " AND CODIGO_CATEGORIACAMA" + idCategoriaCama;
         
          try {
            boolean validacion = statement.execute(sql);

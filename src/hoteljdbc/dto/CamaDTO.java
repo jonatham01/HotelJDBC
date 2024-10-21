@@ -6,14 +6,11 @@ public class CamaDTO {
     private String reciboUrl;
     private Date fechaCama;
     private int idCategoriaCama;
-    private String descripcionCama;
 
-    public CamaDTO(String reciboUrl, Date fechaCama, int idCategoriaCama, String descripcionCama) {
+    public CamaDTO(String reciboUrl, Date fechaCama, int idCategoriaCama) {
         this.reciboUrl = reciboUrl;
         this.fechaCama = fechaCama;
-        this.idCategoriaCama = idCategoriaCama;
-        this.descripcionCama = descripcionCama;
-    }
+        this.idCategoriaCama = idCategoriaCama;    }
 
     public String getReciboUrl() {
         return reciboUrl;
@@ -38,15 +35,5 @@ public class CamaDTO {
     public void setIdCategoriaCama(int idCategoriaCama) {
         this.idCategoriaCama = idCategoriaCama;
     }
-
-    public String getDescripcionCama() {
-        return descripcionCama;
-    }
-
-    public void setDescripcionCama(String descripcionCama) {
-        this.descripcionCama = descripcionCama;
-    }
-
-
 }
 

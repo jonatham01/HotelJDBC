@@ -1,13 +1,14 @@
 
 package hoteljdbc.servicio;
 
+import hoteljdbc.dto.CamaHabitacionDTO;
+import hoteljdbc.entidad.CamaHabitacion;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
-import hoteljdbc.dto.CamaHabitacionDTO;
-import hoteljdbc.entidad.CamaHabitacion;
-import hoteljdbc.entidad.CategoriaHabitacion;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,11 +27,10 @@ public class CamaHabitacionServicio {
     }
     
     public CamaHabitacion crearCamaHabitacion(Connection conexion, CamaHabitacionDTO dto){
-        String sql = "INSERT INTO CATEGORIAHABITACION(idCategoriaHabitacion,nombre,precioNoche,fotoUrl) "
-               + "VALUES(CAMA.SQL.NEXTVAL,"
+        String sql = "INSERT INTO CAMA_HABITACION(ID_CAMA,ID_HABITACION,ESTADO) "
                + dto.getIdCama() + ","
                + dto.getIdHabitacion() + ","
-               + dto.getEstado() + ","
+               + dto.getEstado()
                + ")";
         
         try {
@@ -47,12 +47,12 @@ public class CamaHabitacionServicio {
     }
     
     public CamaHabitacion modificarCamaHabitacion(Connection conexion, CamaHabitacionDTO dto, int idHabitacion, int idCama){
-        String sql = "UPDATE CAMAHABITACION SET "
-                + " IDHABITACION = " + dto.getIdHabitacion()
-                + " , IDCAMA = " + dto.getIdCama()
+        String sql = "UPDATE CAMA_HABITACION SET "
+                + " ID_HABITACION = " + dto.getIdHabitacion()
+                + " , ID_CAMA = " + dto.getIdCama()
                 + " ,ESTADO = " + dto.getEstado()
-                + "WHERE IDHABITACION = " + idHabitacion
-                + " AND IDCAMA = " + idCama;
+                + "WHERE ID_HABITACION = " + idHabitacion
+                + " AND ID_CAMA = " + idCama;
         
         try {
             statement = conexion.prepareStatement(sql);
@@ -69,8 +69,8 @@ public class CamaHabitacionServicio {
     
     public CamaHabitacion mostrarCamaHabitacion (Connection conexion, int idHabitacion, int idCama){
         
-        String sql = "SELECT * FROM CAMAHABITACION "
-                + "WHERE IDCAMA = " + idCama + " AND IDHABITACION = " + idHabitacion;
+        String sql = "SELECT * FROM CAMA_HABITACION "
+                + "WHERE ID_CAMA = " + idCama + " AND ID_HABITACION = " + idHabitacion;
         
         try {
             statement = conexion.prepareStatement(sql);
@@ -86,8 +86,8 @@ public class CamaHabitacionServicio {
     }
     
     public boolean borrarCamaHabitacion( int idHabitacion, int idCama) {
-        String sql = "DELETE FROM CAMAHABITACION "
-                 + "WHERE IDCAMA = " + idCama + " AND IDHABITACION = " + idHabitacion;
+        String sql = "DELETE FROM CAMA_HABITACION "
+                 + "WHERE ID_CAMA = " + idCama + " AND ID_HABITACION = " + idHabitacion;
        try {
            boolean validacion = statement.execute(sql);
            statement.close();

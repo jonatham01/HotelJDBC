@@ -17,7 +17,7 @@ public class RecepcionHabitacionServicio {
     private PreparedStatement statement;
     
     public RecepcionHabitacion crearRecepcionHabitacion(Connection conexion, RecepcionDTO dto){
-        String sql = "INSERT INTO RECEPCIONHABITACION(FECHA,IDHABITACION,CATEGORIA) VALUES(CAMA.SQL.NEXTVAL,?,?,?)";
+        String sql = "INSERT INTO RECEPCIONHABITACION(FECHA,ID_HABITACION,CATEGORIA) VALUES(CAMA.SQL.NEXTVAL,?,?,?)";
         try {
             statement = conexion.prepareStatement(sql);
             statement.setDate(1, (Date) dto.getFecha());
@@ -27,9 +27,9 @@ public class RecepcionHabitacionServicio {
             statement.close();
             if(resultado.next()){
                 return new RecepcionHabitacion(
-                        resultado.getInt("codigoRecepcionHabitacion"),
+                        resultado.getInt("codigo_recepcion_habitacion"),
                         resultado.getDate("fecha"),
-                        resultado.getInt("idHabitacion"),
+                        resultado.getInt("id_habitacion"),
                         resultado.getString("categoria")
                 );
             }
@@ -41,16 +41,16 @@ public class RecepcionHabitacionServicio {
     }
     
     public RecepcionHabitacion mostrarRecepcionHabitacion(Connection conexion, int id){
-        String sql = "SELECT * FROM RECEPCIONHABITACION WHERE CODIGORECEPCIONHABITACION = ${id}";
+        String sql = "SELECT * FROM RECEPCION_HABITACION WHERE CODIGO_RECEPCION_HABITACION = ${id}";
         try{
             statement = conexion.prepareStatement(sql);
             ResultSet resultado = statement.executeQuery();
             statement.close();
             if(resultado.next()){
                 return new RecepcionHabitacion(
-                        resultado.getInt("codigoRecepcionHabitacion"),
+                        resultado.getInt("codigo_recepcion_habitacion"),
                         resultado.getDate("fecha"),
-                        resultado.getInt("idHabitacion"),
+                        resultado.getInt("id_habitacion"),
                         resultado.getString("categoria")
                 );
             }
@@ -63,8 +63,8 @@ public class RecepcionHabitacionServicio {
     }
     
     public RecepcionHabitacion modificarRecepcionHabitacion(Connection conexion, int id, RecepcionDTO dto ){
-        String sql = "UPDATE RECEPCIONHABITACION SET FECHA = ?, IDHABITACION = ?, CATEGORIA = ? "
-                + "WHERE CODIGORECEPCIONHABITACION = ${id}";
+        String sql = "UPDATE RECEPCION_HABITACION SET FECHA = ?, ID_HABITACION = ?, CATEGORIA = ? "
+                + "WHERE CODIGO_RECEPCION_HABITACION = ${id}";
         try{
             statement = conexion.prepareStatement(sql);
             statement.setDate(1, (Date) dto.getFecha());
@@ -74,9 +74,9 @@ public class RecepcionHabitacionServicio {
             statement.close();
             if(resultado.next()){
                 return new RecepcionHabitacion(
-                        resultado.getInt("codigoRecepcionHabitacion"),
+                        resultado.getInt("codigo_recepcion_habitacion"),
                         resultado.getDate("fecha"),
-                        resultado.getInt("idHabitacion"),
+                        resultado.getInt("id_habitacion"),
                         resultado.getString("categoria")
                 );
             }
@@ -89,7 +89,7 @@ public class RecepcionHabitacionServicio {
     }
     
     public boolean BorrarRecepcionHabitacion(Connection conexion, int id){
-        String sql = "DELETE FROM RECEPCIONHABITACION WHERE CODIGORECEPCIONHABITACION = " +id;
+        String sql = "DELETE FROM RECEPCION_HABITACION WHERE CODIGO_RECEPCION_HABITACION = " +id;
         
         try {
             statement = conexion.prepareStatement(sql);

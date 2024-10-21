@@ -7,14 +7,13 @@ public class Cama {
     private String reciboUrl;
     private Date fechaCama;
     private int idCategoriaCama;
-    private String descripcionCama;
 
-    public Cama(int idCama, String reciboUrl, Date fechaCama, int idCategoriaCama, String descripcionCama) {
+    public Cama(int idCama, String reciboUrl, Date fechaCama, int idCategoriaCama) {
         this.idCama = idCama;
         this.reciboUrl = reciboUrl;
         this.fechaCama = fechaCama;
         this.idCategoriaCama = idCategoriaCama;
-        this.descripcionCama = descripcionCama;
+
     }
 
     public int getIdCama() {
@@ -47,14 +46,6 @@ public class Cama {
 
     public void setIdCategoriaCama(int idCategoriaCama) {
         this.idCategoriaCama = idCategoriaCama;
-    }
-
-    public String getDescripcionCama() {
-        return descripcionCama;
-    }
-
-    public void setDescripcionCama(String descripcionCama) {
-        this.descripcionCama = descripcionCama;
     }
 
 

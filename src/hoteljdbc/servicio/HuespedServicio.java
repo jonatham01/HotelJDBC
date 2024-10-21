@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
-import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,7 +32,7 @@ public class HuespedServicio {
     }
     
     public Huesped crearHuesped(Connection conexion, Huesped huesped){
-        String sql = "INSERT INTO HUESPED(CEDULA,NOMBRE,APELLIDO,TIPOIDENTIFICACION) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO HUESPED(CEDULA,NOMBRE,APELLIDO,TIPO_IDENTIFICACION) VALUES(?,?,?,?)";
         boolean validacion = ejecutarSQL(conexion,sql,huesped);
         if(validacion){
             return  huesped;
@@ -51,7 +50,7 @@ public class HuespedServicio {
                         resultado.getInt("cedula"),
                         resultado.getString("nombre"),
                         resultado.getString("apellido"),
-                        resultado.getString("TipoIdentificacion")
+                        resultado.getString("tipo_identificacion")
                 );
                 statement.close();
                 return huesped;
@@ -63,7 +62,7 @@ public class HuespedServicio {
     }
     
     public Huesped modificarHuesped(Connection conexion, Huesped huesped, int id){
-        String sql = "UPDATE HUESPED SET CEDULA = ?,NOMBRE = ?,APELLIDO = ?,TIPOIDENTIFICACION = ? WHERE CEDULA" + id;
+        String sql = "UPDATE HUESPED SET CEDULA = ?,NOMBRE = ?,APELLIDO = ?,TIPO_IDENTIFICACION = ? WHERE CEDULA" + id;
         boolean validacion = ejecutarSQL(conexion,sql,huesped);
         if(validacion){
             return  huesped;

@@ -19,14 +19,14 @@ public class FacturaServicio {
         try {
             if(resultado.next()){
                 return new Factura(
-                    resultado.getLong("idFactura"),
+                    resultado.getLong("id_factura"),
                     resultado.getDouble("total"),
                     resultado.getDouble("subtotal"),
                     resultado.getDouble("iva"),
                     resultado.getDouble("inc"),
                     resultado.getDouble("descuento"),
                     resultado.getString("categoria"),
-                    resultado.getDate("fechaHora")
+                    resultado.getDate("fecha_hora")
                 );
             }
         } catch (SQLException ex) {
@@ -58,7 +58,7 @@ public class FacturaServicio {
     }
     
     public Factura crearFactura(Connection conexion, FacturaDTO dto){
-        String sql = "INSERT INTO FACTURA(total,subtotal,iva,inc,descuento,categoria,fechaHora)"
+        String sql = "INSERT INTO FACTURA(total,subtotal,iva,inc,descuento,categoria,fecha_hora)"
                 + "VALUES(CAMA.SQL.NEXTVAL,?,?,?,?)";
         return ejecutar(conexion,sql,dto);
     }
@@ -71,18 +71,18 @@ public class FacturaServicio {
                 + ", INC = ? "
                 + ", DESCUENTO = ? "
                 + ", CATEGORIA = ? "
-                + ", FECHAHORA = ? "
-                + "WHERE IDFACTURA = " + id;
+                + ", FECHA_HORA = ? "
+                + "WHERE ID_FACTURA = " + id;
         return ejecutar(conexion,sql,dto);
     }
     
     public Factura mostrarFactura(Connection conexion, int id){
-        String sql = "SELECT * FROM FACTURA WHERE IDFACTURA = " +id;
+        String sql = "SELECT * FROM FACTURA WHERE ID_FACTURA = " +id;
         return ejecutar(conexion,sql,null);
     }
     
     public boolean borrarFactura(Connection conexion, int id){
-        String sql = "DELETE FROM FACTURA WHERE IDFACTURA = " +id;
+        String sql = "DELETE FROM FACTURA WHERE ID_FACTURA = " +id;
         try {
             statement = conexion.prepareStatement(sql);
             boolean validacion = statement.execute();

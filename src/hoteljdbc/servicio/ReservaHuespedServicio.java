@@ -15,7 +15,7 @@ public class ReservaHuespedServicio {
     PreparedStatement statement;
     
     public ReservaHuesped crearReservaHuesped(Connection conexion, ReservaHuesped reservaHuesped){
-        String sql = "INSERT INTO RESERVAHUESPED(IDRESERVA,IDHUESPED,FECHARESERVA)VALUES(?,?,?)";
+        String sql = "INSERT INTO RESERVA_HUESPED(ID_RESERVA,ID_HUESPED,FECHA_RESERVA)VALUES(?,?,?)";
         try {
             statement = conexion.prepareStatement(sql);
             statement.setLong(1, reservaHuesped.getIdReserva());
@@ -34,8 +34,8 @@ public class ReservaHuespedServicio {
         return null;
     }
     public ReservaHuesped modificarReservaHuesped(Connection conexion, ReservaHuesped reservaHuesped, long idReserva,int idHuesped){
-        String sql = "UDTATE RESERVAHUESPED SET IDRESERVA = ?, IDHUESPED = ?, FECHARESERVA = ? "
-                + "WHERE IDRESERVA = " +idReserva + " AND IDHUESPED = " +idHuesped;
+        String sql = "UDTATE RESERVAHUESPED SET ID_RESERVA = ?, ID_HUESPED = ?, FECHA_RESERVA = ? "
+                + "WHERE ID_RESERVA = " +idReserva + " AND ID_HUESPED = " +idHuesped;
         try {
             statement = conexion.prepareStatement(sql);
             statement.setLong(1, reservaHuesped.getIdReserva());
@@ -55,8 +55,8 @@ public class ReservaHuespedServicio {
     }
     
     public ReservaHuesped mostrarReservaHuesped(Connection conexion, long idReserva,int idHuesped){
-        String sql = "SELECT * FROM RESERVA HUESPED"
-                + "WHERE IDRESERVA = " +idReserva + " AND IDHUESPED = " +idHuesped;
+        String sql = "SELECT * FROM RESERVA_HUESPED"
+                + "WHERE ID_RESERVA = " +idReserva + " AND ID_HUESPED = " +idHuesped;
         
         try {
             statement = conexion.prepareStatement(sql);
@@ -79,8 +79,8 @@ public class ReservaHuespedServicio {
     }
     
     public boolean borrarReservaHuesped(Connection conexion, ReservaHuesped reservaHuesped, long idReserva,int idHuesped){
-        String sql = "DELETE FROM RESERVAHUESPED"
-                + "WHERE IDRESERVA = " +idReserva + " AND IDHUESPED = " +idHuesped;
+        String sql = "DELETE FROM RESERVA_HUESPED"
+                + "WHERE ID_RESERVA = " +idReserva + " AND ID_HUESPED = " +idHuesped;
         try {
             statement = conexion.prepareStatement(sql);    
             boolean validacion = statement.execute();

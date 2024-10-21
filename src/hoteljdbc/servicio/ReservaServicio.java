@@ -18,13 +18,13 @@ public class ReservaServicio {
         try {
             if(resultado.next()){
                 return new Reserva(
-                        resultado.getLong("idReserva"),
-                        resultado.getDate("fechaReserva"),
+                        resultado.getLong("id_reserva"),
+                        resultado.getDate("fecha_reserva"),
                         resultado.getString("estado"),
-                        resultado.getDate("fechaInicio").toLocalDate(),
-                        resultado.getDate("fechaFin").toLocalDate(),
-                        resultado.getInt("idCliente"),
-                        resultado.getLong("idFactura")
+                        resultado.getDate("fecha_inicio").toLocalDate(),
+                        resultado.getDate("fecha_fin").toLocalDate(),
+                        resultado.getInt("id_cliente"),
+                        resultado.getLong("id_factura")
                 );
             }
         } catch (SQLException ex) {
@@ -56,25 +56,25 @@ public class ReservaServicio {
     }
     
     public Reserva guardarReserva(Connection conexion,ReservaDTO dto){
-        String sql = "INSERT INTO RESERVA(FECHARESERVA,ESTADO,FECHAINICIO,FECHAFIN,IDCLIENTE,IDFACTURA) "
+        String sql = "INSERT INTO RESERVA(FECHA_RESERVA,ESTADO,FECHA_INICIO,FECHA_FIN,ID_CLIENTE,ID_FACTURA) "
                 + "VALUES(CAMA.SQL.NEXTVAL,?,?,?,?,?,?)";
         return ejecutar(conexion,sql,dto);
     }
     
     public Reserva modificarReserva(Connection conexion,ReservaDTO dto, int id){
-        String sql = "UPDATE RESERVA SET FECHARESERVA = ? , ESTADO = ? , FECHAINICIO = ?"
-                + " ,FECHAFIN = ? , IDCLIENTE = ? , IDFACTURA = ? "
-                + "WHERE IDRESERVA = " + id;
+        String sql = "UPDATE RESERVA SET FECHA_RESERVA = ? , ESTADO = ? , FECHA_INICIO = ?"
+                + " ,FECHA_FIN = ? , ID_CLIENTE = ? , ID_FACTURA = ? "
+                + "WHERE ID_RESERVA = " + id;
         return ejecutar(conexion,sql,dto);
     }
     
     public Reserva mostrarReserva(Connection conexion, int id){
-        String sql = "SELECT * FROM RESERVA WHERE IDRESERVA = " + id;
+        String sql = "SELECT * FROM RESERVA WHERE ID_RESERVA = " + id;
         return ejecutar(conexion,sql,null);
     }
     
     public boolean eliminarReserva(Connection conexion, int id){
-        String sql = "DELETE FROM RESERVA WHERE IDRESERVA = " +id;
+        String sql = "DELETE FROM RESERVA WHERE ID_RESERVA = " +id;
         try {
             statement = conexion.prepareStatement(sql);
             boolean validacion = statement.execute();
