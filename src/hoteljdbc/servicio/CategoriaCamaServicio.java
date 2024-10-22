@@ -8,23 +8,33 @@ import java.sql.*;
 public class CategoriaCamaServicio {
     PreparedStatement pst;
     
-    public String crearCategoriaCama(Connection conexion, CategoriaCama entidad){
+    public CategoriaCama crearCategoriaCama(Connection conexion, CategoriaCama entidad){
         
-        String sql = "INSERT INTO categoria_cama (id_categoria_cama,tipo,medidas,foto_url,color) "
-                + "Values(CATEGORIA_CAMA.SEQ.NEXTVAL,?,?,?,?)";
+        String sql = "INSERT INTO categoria_cama (tipo,medidas,foto_url,color) "
+                + "Values(?,?,?,?)";
         try {
-            pst = conexion.prepareStatement(sql) ;
+            pst = conexion.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS) ;
             pst.setString(1,entidad.getTipo());
             pst.setString(2,entidad.getMedidas());
             pst.setString(3, entidad.getFotoUrl());
             pst.setString(4, entidad.getColor());
-            Boolean validacion = pst.execute();
-            if(validacion == true){
-                return "Se creo la categoria cama con exito";
+            int filas = pst.executeUpdate();
+
+            
+            if (filas > 0) {
+                try (ResultSet resultado = pst.getGeneratedKeys()) {
+                    if (resultado.next()) {
+                        // Obtiene el ID generado
+                        int id = resultado.getInt(1);
+                        pst.close();             
+                        return mostrarCategoriaCama(conexion, (int) id);
+                    } 
+                }
             }
-            pst.close();
+    
+         
         }catch(SQLException e){
-             return "No se pudo crear la categoria cama con exito";
+             System.out.println("No se pudo crear la categoria cama con exito" + e.getMessage());
             
         }
         
@@ -54,33 +64,38 @@ public class CategoriaCamaServicio {
         return categoriaCama;
     }
     
-    public String modificarCategoriaCama(Connection conexion, CategoriaCama entidad){
+    public CategoriaCama modificarCategoriaCama(Connection conexion, CategoriaCama entidad,int id){
         
-        String sql = "UPDATE categoria_cama SET TIPO = ${entidad.getTipo()} ,MEDIDAS = ${entidad.getMedidas()} ,FOTO_URL = ${entidad.getFotoUrl()} ,COLOR = ${entidad.getColor()} "
-                + "WHERE ID_CATEGORIA_CAMA = ${entidad.getIdCategoriaCama()}  ";
+        
+        String sql = "UPDATE categoria_cama SET tipo = ? ,medidas = ? , foto_url = ? , color = ? "
+                + "WHERE ID_CATEGORIA_CAMA = ?" ;
         try {
             pst = conexion.prepareStatement(sql) ;
-            Boolean validacion = pst.execute();
-            if(validacion == true){
-                return "Se modifico la categoria cama con exito";
+            pst.setString(1,entidad.getTipo());
+            pst.setString(2,entidad.getMedidas());
+            pst.setString(3, entidad.getFotoUrl());
+            pst.setString(4, entidad.getColor());
+            pst.setInt(5, id);
+            int filas = pst.executeUpdate();
+            if (filas > 0){
+                return mostrarCategoriaCama(conexion,id);
             }
-            pst.close();
         }catch(SQLException e){
-             return "No se pudo modificar la categoria cama con exito";
+             System.out.println("No se pudo crear la categoria cama con exito" + e.getMessage());
         }
         
         return null;
     }
     
     public String eliminarCategoriaCama(Connection conexion, int id){
-        String sql = "DELETE FROM categoria_cama  WHERE ID_CATEGORIA_CAMA = ${entidad.getIdCategoriaCama()}  ";
+        String sql = "DELETE FROM categoria_cama  WHERE ID_CATEGORIA_CAMA = ?  ";
         try {
             pst = conexion.prepareStatement(sql) ;
-            Boolean validacion = pst.execute();
-            if(validacion == true){
-                System.out.println("Se borro la categoria cama con exito");
-            }
+            pst.setInt(1, id);
+            pst.execute();
             pst.close();
+            return "Se borro la categoria cama con exito";
+           
         }catch(SQLException e){
              System.out.println("No se pudo borrar la categoria cama con exito");
             System.out.println(e.getMessage());

@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Conexion {
-    String db = "demo3"; // Nombre de la base de datos
+    String db = "hotel"; // Nombre de la base de datos
     String url = "jdbc:mysql://localhost:3306/";
     String user = "root";
     String password = "28166";
