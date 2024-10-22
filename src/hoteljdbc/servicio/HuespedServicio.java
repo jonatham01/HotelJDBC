@@ -12,38 +12,11 @@ import java.util.logging.Logger;
 public class HuespedServicio {
     PreparedStatement statement;
     
-    private boolean ejecutarSQL(Connection conexion, String sql, Huesped huesped){
+    public Huesped mostrarHuesped(Connection conexion, int cedula){
+        String sql = "SELECT * FROM HUESPED WHERE CEDULA = ?";
         try {
             statement = conexion.prepareStatement(sql);
-            if( huesped != null){
-                statement.setInt(1, huesped.getCedula());
-                statement.setString(2, huesped.getNombre());
-                statement.setString(3, huesped.getApellido());
-                statement.setString(4, huesped.getTipoIdentificacion());
-            }
-            boolean validacion = statement.execute();
-            statement.close();
-            return validacion;
-  
-        } catch (SQLException ex) {
-            Logger.getLogger(HuespedServicio.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
-    
-    public Huesped crearHuesped(Connection conexion, Huesped huesped){
-        String sql = "INSERT INTO HUESPED(CEDULA,NOMBRE,APELLIDO,TIPO_IDENTIFICACION) VALUES(?,?,?,?)";
-        boolean validacion = ejecutarSQL(conexion,sql,huesped);
-        if(validacion){
-            return  huesped;
-        }
-        return null;
-    }
-    
-    public Huesped mostrarHuesped(Connection conexion, int id){
-        String sql = "SELECT * FROM HUESPED WHERE CEDULA =" +id;
-        try {
-            statement = conexion.prepareStatement(sql);
+            statement.setInt(1, cedula);
             ResultSet resultado = statement.executeQuery();
             if(resultado.next()){
                 Huesped huesped = new Huesped(
@@ -60,18 +33,78 @@ public class HuespedServicio {
         }
         return null;
     }
-    
-    public Huesped modificarHuesped(Connection conexion, Huesped huesped, int id){
-        String sql = "UPDATE HUESPED SET CEDULA = ?,NOMBRE = ?,APELLIDO = ?,TIPO_IDENTIFICACION = ? WHERE CEDULA" + id;
-        boolean validacion = ejecutarSQL(conexion,sql,huesped);
-        if(validacion){
-            return  huesped;
+       
+    public Huesped crearHuesped(Connection conexion, Huesped huesped){
+        String sql = "INSERT INTO HUESPED(CEDULA,NOMBRE,APELLIDO,TIPO_IDENTIFICACION) VALUES(?,?,?,?)";
+        try {
+            statement = conexion.prepareStatement(sql);
+            if( huesped != null){
+                statement.setInt(1, huesped.getCedula());
+                statement.setString(2, huesped.getNombre());
+                statement.setString(3, huesped.getApellido());
+                statement.setString(4, huesped.getTipoIdentificacion());
+            }
+           int filas = statement.executeUpdate();
+            if ( filas > 0 ){
+                try(ResultSet resultado = statement.getGeneratedKeys()){
+                    if (resultado.next()){
+                        int id = resultado.getInt(1);
+                        statement.close();
+                        return mostrarHuesped(conexion,id);
+                    }                    
+                }
+            }
+  
+        } catch (SQLException ex) {
+            Logger.getLogger(HuespedServicio.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         return null;
     }
-     public boolean borrarHuesped(Connection conexion, int id){
-        String sql = "DELETE FROM HUESPED WHERE CEDULA = " + id;
-        return ejecutarSQL(conexion,sql,null);
+    
+    
+    
+    public Huesped modificarHuesped(Connection conexion, Huesped huesped, int cedula){
+        String sql = "UPDATE HUESPED SET CEDULA = ?,NOMBRE = ?,APELLIDO = ?,TIPO_IDENTIFICACION = ? WHERE CEDULA = ?";
+         try {
+            statement = conexion.prepareStatement(sql);
+            if( huesped != null){
+                statement.setInt(1, huesped.getCedula());
+                statement.setString(2, huesped.getNombre());
+                statement.setString(3, huesped.getApellido());
+                statement.setString(4, huesped.getTipoIdentificacion());
+                statement.setInt(5, cedula);
+            }
+           int filas = statement.executeUpdate();
+            if ( filas > 0 ){
+                try(ResultSet resultado = statement.getGeneratedKeys()){
+                    if (resultado.next()){
+                        int id = resultado.getInt(1);
+                        statement.close();
+                        return mostrarHuesped(conexion,id);
+                    }                    
+                }
+            }
+            
+  
+        } catch (SQLException ex) {
+            Logger.getLogger(HuespedServicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+     public boolean borrarHuesped(Connection conexion, int cedula){
+        String sql = "DELETE FROM HUESPED WHERE CEDULA =  ?" ;
+        try{
+            statement = conexion.prepareStatement(sql);
+            statement.setInt(1, cedula);
+            statement.execute(sql);
+            statement.close();
+            return true;
+        }catch(SQLException ex){
+            Logger.getLogger(ClienteServicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
         
     }
     

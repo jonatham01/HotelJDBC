@@ -97,7 +97,7 @@ public class CategoriaCamaHabitacionServicio {
             statement = conexion.prepareStatement(sql);
             statement.setInt(1, categoriaCamaHabitacion.getCodigoCategoriaCama());
             statement.setInt(2, categoriaCamaHabitacion.getCodigoCategoriaHabitacion());
-            statement.setInt(3, categoriaCamaHabitacion.getCantidad());
+            statement.setShort(3, categoriaCamaHabitacion.getCantidad());
             statement.setInt(4, idCategoriaCama);
             statement.setInt(5, idCategoriaHabitacion);
             int filas = statement.executeUpdate();

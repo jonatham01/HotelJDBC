@@ -20,10 +20,16 @@ public class ClienteServicio {
             statement.setInt(1, cliente.getCedula());
             statement.setString(2, cliente.getNombre());
             statement.setString(3, cliente.getTipoIdentificacion());
-            boolean validacion = statement.execute(sql);
-            statement.close();
-            if(validacion){
-                return cliente;
+            int filas = statement.executeUpdate();
+            if ( filas > 0 ){
+                try(ResultSet resultado = statement.getGeneratedKeys()){
+                    if (resultado.next()){
+                        int id = resultado.getInt(1);
+                        statement.close();
+                        sql = null;
+                        return mostrarCliente(conexion,id);
+                    }                    
+                }
             }
         }catch(SQLException ex){
              Logger.getLogger(ClienteServicio.class.getName()).log(Level.SEVERE, null, ex);
@@ -31,9 +37,10 @@ public class ClienteServicio {
        return null;
    }
    public Cliente mostrarCliente(Connection conexion, int cedula){
-       sql = "SELECT * FROM CLIENTE WHERE CEDULA = " + cedula;
+       sql = "SELECT * FROM CLIENTE WHERE CEDULA = ?" ;
        try {
            statement = conexion.prepareStatement(sql);
+           statement.setInt(1, cedula);
            ResultSet resultado = statement.executeQuery();
             if(resultado.next()){
                Cliente cliente = new Cliente(
@@ -62,12 +69,17 @@ public class ClienteServicio {
            statement.setString(2, cliente.getNombre());
            statement.setString(3, cliente.getTipoIdentificacion());
            statement.setInt(4, cedula);
-           boolean validacion = statement.execute();
-            if(validacion){
-                statement.close();
-                sql = null;
-                return cliente;
-           }
+           int filas = statement.executeUpdate();
+            if ( filas > 0 ){
+                try(ResultSet resultado = statement.getGeneratedKeys()){
+                    if (resultado.next()){
+                        int id = resultado.getInt(1);
+                        statement.close();
+                        sql = null;
+                        return mostrarCliente(conexion,id);
+                    }                    
+                }
+            }
            
        } catch (SQLException ex) {
            Logger.getLogger(ClienteServicio.class.getName()).log(Level.SEVERE, null, ex);
@@ -76,15 +88,13 @@ public class ClienteServicio {
    }
    
    public boolean borrarCliente(Connection conexion, int cedula){
-       sql = "DELETE  FROM CLIENTE WHERE CEDULA = " + cedula;
-       try {
-           statement = conexion.prepareStatement(sql);
-           boolean validacion = statement.execute();
-            if(validacion){
-                statement.close();
-                sql = null;
-                return true;
-           }
+       sql = "DELETE  FROM CLIENTE WHERE CEDULA = ?" ;
+       try{
+            statement = conexion.prepareStatement(sql);
+            statement.setInt(1, cedula);
+            statement.execute(sql);
+            statement.close();
+            return true;
        } catch (SQLException ex) {
            Logger.getLogger(ClienteServicio.class.getName()).log(Level.SEVERE, null, ex);
        }
