@@ -14,52 +14,13 @@ import java.util.logging.Logger;
 public class ReservaHuespedServicio {
     PreparedStatement statement;
     
-    public ReservaHuesped crearReservaHuesped(Connection conexion, ReservaHuesped reservaHuesped){
-        String sql = "INSERT INTO RESERVA_HUESPED(ID_RESERVA,ID_HUESPED,FECHA_RESERVA)VALUES(?,?,?)";
-        try {
-            statement = conexion.prepareStatement(sql);
-            statement.setLong(1, reservaHuesped.getIdReserva());
-            statement.setInt(2, reservaHuesped.getIdHuesped());
-            statement.setDate(3, (Date) reservaHuesped.getFechaReserva());
-            
-            boolean validacion = statement.execute();
-            statement.close();
-            if(validacion){
-                return reservaHuesped;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ReservaHuespedServicio.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return null;
-    }
-    public ReservaHuesped modificarReservaHuesped(Connection conexion, ReservaHuesped reservaHuesped, long idReserva,int idHuesped){
-        String sql = "UDTATE RESERVAHUESPED SET ID_RESERVA = ?, ID_HUESPED = ?, FECHA_RESERVA = ? "
-                + "WHERE ID_RESERVA = " +idReserva + " AND ID_HUESPED = " +idHuesped;
-        try {
-            statement = conexion.prepareStatement(sql);
-            statement.setLong(1, reservaHuesped.getIdReserva());
-            statement.setInt(2, reservaHuesped.getIdHuesped());
-            statement.setDate(3, (Date) reservaHuesped.getFechaReserva());
-            
-            boolean validacion = statement.execute();
-            statement.close();
-            if(validacion){
-                return reservaHuesped;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ReservaHuespedServicio.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return null;
-    }
-    
     public ReservaHuesped mostrarReservaHuesped(Connection conexion, long idReserva,int idHuesped){
-        String sql = "SELECT * FROM RESERVA_HUESPED"
-                + "WHERE ID_RESERVA = " +idReserva + " AND ID_HUESPED = " +idHuesped;
+        String sql = "SELECT * FROM RESERVA_HUESPED WHERE ID_RESERVA = ? AND ID_HUESPED = ?" ;
         
         try {
             statement = conexion.prepareStatement(sql);
+            statement.setLong(1, idReserva);
+            statement.setInt(2,idHuesped);
             ResultSet resultado = statement.executeQuery();
             ReservaHuesped reservaHuesped = null;
             if(resultado.next()){
@@ -78,13 +39,66 @@ public class ReservaHuespedServicio {
                     
     }
     
+    public ReservaHuesped crearReservaHuesped(Connection conexion, ReservaHuesped reservaHuesped){
+        String sql = "INSERT INTO RESERVA_HUESPED(ID_RESERVA,ID_HUESPED,FECHA_RESERVA)VALUES(?,?,?)";
+        try {
+            statement = conexion.prepareStatement(sql);
+            statement.setLong(1, reservaHuesped.getIdReserva());
+            statement.setInt(2, reservaHuesped.getIdHuesped());
+            statement.setDate(3, (Date) reservaHuesped.getFechaReserva());
+            int filas = statement.executeUpdate();
+            if ( filas > 0 ){
+                try(ResultSet resultado = statement.getGeneratedKeys()){
+                    if (resultado.next()){
+                        statement.close();
+                        return mostrarReservaHuesped(conexion,resultado.getLong(1),resultado.getInt(2));
+                    }                    
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ReservaHuespedServicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+    public ReservaHuesped modificarReservaHuesped(Connection conexion, ReservaHuesped reservaHuesped, long idReserva,int idHuesped){
+        String sql = "UDTATE RESERVAHUESPED SET ID_RESERVA = ?, ID_HUESPED = ?, FECHA_RESERVA = ? "
+                + "WHERE ID_RESERVA = ? AND ID_HUESPED = ?" ;
+        try {
+            statement = conexion.prepareStatement(sql);
+            statement.setLong(1, reservaHuesped.getIdReserva());
+            statement.setInt(2, reservaHuesped.getIdHuesped());
+            statement.setDate(3, (Date) reservaHuesped.getFechaReserva());
+            statement.setLong(4, idReserva);
+            statement.setInt(5,idHuesped);
+           int filas = statement.executeUpdate();
+            if ( filas > 0 ){
+                try(ResultSet resultado = statement.getGeneratedKeys()){
+                    if (resultado.next()){
+                        statement.close();
+                        return mostrarReservaHuesped(conexion,resultado.getLong(1),resultado.getInt(2));
+                    }                    
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ReservaHuespedServicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+    
+    
+    
     public boolean borrarReservaHuesped(Connection conexion, ReservaHuesped reservaHuesped, long idReserva,int idHuesped){
         String sql = "DELETE FROM RESERVA_HUESPED"
-                + "WHERE ID_RESERVA = " +idReserva + " AND ID_HUESPED = " +idHuesped;
+                + "WHERE ID_RESERVA = ? AND ID_HUESPED = ? " ;
         try {
-            statement = conexion.prepareStatement(sql);    
-            boolean validacion = statement.execute();
-            return validacion;
+            statement = conexion.prepareStatement(sql);
+            statement.setLong(1, idReserva);
+            statement.setInt(2,idHuesped);
+            statement.execute(sql);
+            statement.close();
+            return true;
         } catch (SQLException ex) {
             Logger.getLogger(ReservaHuespedServicio.class.getName()).log(Level.SEVERE, null, ex);
         }

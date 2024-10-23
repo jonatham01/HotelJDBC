@@ -14,8 +14,13 @@ import hoteljdbc.dto.ReservaDTO;
 public class ReservaServicio {
     PreparedStatement statement;
     
-    private Reserva retornarReserva(ResultSet resultado){
+    public Reserva mostrarReserva(Connection conexion, long id){
         try {
+            String sql = "SELECT * FROM RESERVA WHERE ID_RESERVA = ?";
+            statement = conexion.prepareStatement(sql);
+            statement.setLong(1, id);
+            ResultSet resultado = statement.executeQuery();
+            statement.close();
             if(resultado.next()){
                 return new Reserva(
                         resultado.getLong("id_reserva"),
@@ -30,56 +35,76 @@ public class ReservaServicio {
         } catch (SQLException ex) {
             Logger.getLogger(ReservaServicio.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
-    }
-    
-    private Reserva ejecutar(Connection conexion, String sql, ReservaDTO dto){
-        try {
-            statement = conexion.prepareStatement(sql);
-            if(dto != null){
-                statement.setDate(1, (Date) dto.getFechaReserva());
-                statement.setString(2,dto.getEstado());
-                statement.setDate(3,Date.valueOf(dto.getFechaInicio()) );
-                statement.setDate(4, Date.valueOf(dto.getFechaFin()));
-                statement.setInt(5, dto.getIdCliente());
-                statement.setLong(6, dto.getIdFactura());
-            }
-            ResultSet resultado = statement.executeQuery();
-            Reserva reserva = retornarReserva(resultado);
-            statement.close();
-            return reserva;
-        } catch (SQLException ex) {
-            Logger.getLogger(ReservaServicio.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
         return null;
     }
     
+
+    
     public Reserva guardarReserva(Connection conexion,ReservaDTO dto){
         String sql = "INSERT INTO RESERVA(FECHA_RESERVA,ESTADO,FECHA_INICIO,FECHA_FIN,ID_CLIENTE,ID_FACTURA) "
                 + "VALUES(CAMA.SQL.NEXTVAL,?,?,?,?,?,?)";
-        return ejecutar(conexion,sql,dto);
-    }
-    
-    public Reserva modificarReserva(Connection conexion,ReservaDTO dto, int id){
-        String sql = "UPDATE RESERVA SET FECHA_RESERVA = ? , ESTADO = ? , FECHA_INICIO = ?"
-                + " ,FECHA_FIN = ? , ID_CLIENTE = ? , ID_FACTURA = ? "
-                + "WHERE ID_RESERVA = " + id;
-        return ejecutar(conexion,sql,dto);
-    }
-    
-    public Reserva mostrarReserva(Connection conexion, int id){
-        String sql = "SELECT * FROM RESERVA WHERE ID_RESERVA = " + id;
-        return ejecutar(conexion,sql,null);
-    }
-    
-    public boolean eliminarReserva(Connection conexion, int id){
-        String sql = "DELETE FROM RESERVA WHERE ID_RESERVA = " +id;
         try {
             statement = conexion.prepareStatement(sql);
-            boolean validacion = statement.execute();
+            statement.setDate(1, (Date) dto.getFechaReserva());
+            statement.setString(2, dto.getEstado());
+            statement.setDate(3, Date.valueOf(dto.getFechaInicio()));
+            statement.setDate(4, Date.valueOf(dto.getFechaFin()));
+            statement.setInt(5, dto.getIdCliente());
+            statement.setLong(6, dto.getIdFactura());
+            int filas = statement.executeUpdate();
+            if(filas > 0){
+                try(ResultSet resultado = statement.getGeneratedKeys()){
+                    Reserva reserva = mostrarReserva(conexion, resultado.getLong(1));
+                    statement.close();
+                    return reserva;
+                }
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ReservaServicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public Reserva modificarReserva(Connection conexion,ReservaDTO dto, long id){
+        String sql = "UPDATE RESERVA SET FECHA_RESERVA = ? , ESTADO = ? , FECHA_INICIO = ?"
+                + " ,FECHA_FIN = ? , ID_CLIENTE = ? , ID_FACTURA = ? "
+                + "WHERE ID_RESERVA = ?" ;
+        try {
+            statement = conexion.prepareStatement(sql);
+            statement.setDate(1, (Date) dto.getFechaReserva());
+            statement.setString(2, dto.getEstado());
+            statement.setDate(3, Date.valueOf(dto.getFechaInicio()));
+            statement.setDate(4, Date.valueOf(dto.getFechaFin()));
+            statement.setInt(5, dto.getIdCliente());
+            statement.setLong(6, dto.getIdFactura());
+            statement.setLong(7, id);
+            int filas = statement.executeUpdate();
+            if(filas > 0){
+                try(ResultSet resultado = statement.getGeneratedKeys()){
+                    Reserva reserva = mostrarReserva(conexion, resultado.getLong(1));
+                    statement.close();
+                    return reserva;
+                }
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ReservaServicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    
+    
+    public boolean eliminarReserva(Connection conexion, long id){
+        String sql = "DELETE FROM RESERVA WHERE ID_RESERVA = ? " ;
+        try {
+            statement = conexion.prepareStatement(sql);
+            statement.setLong(1, id);
+            statement.execute(sql);
             statement.close();
-            return validacion;
+            return true;
         } catch (SQLException ex) {
             Logger.getLogger(ReservaServicio.class.getName()).log(Level.SEVERE, null, ex);
         }
